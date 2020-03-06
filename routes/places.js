@@ -5,7 +5,8 @@ var Place = require("../models/place"),
 var middleware = require("../middleware"),
     multer = require("multer"),
     path =  require("path"),
-    {spawn} = require("child_process");
+    {spawn} = require("child_process"),
+    fs = require("fs");
 
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -80,7 +81,14 @@ router.post("/", middleware.isLoggedIn, uploadDir.single("image"), function(req,
         }
         else{
             req.flash("error", "No garbage found in the uploaded image.");
-            res.redirect("/places");
+            fs.unlink("uploads/images/" + req.file.filename, (err) => {
+                if (err){
+                    console.log(err);
+                    return res.redirect("back");
+                }
+                console.log("Image deleted from server");
+                res.redirect("/places");
+            });
         }         
     });       
 });
@@ -137,13 +145,23 @@ router.delete("/:id", middleware.checkPlaceOwnership, function(req, res){
                     }
                 });
             });
-            place.remove(function(err){
-                if(err){
+            var imgpath = place.image.substring(1);
+            fs.unlink(imgpath, (err) => {
+                if (err){
                     console.log(err);
-                    res.redirect("/places");
+                    return res.redirect("back");
                 }
                 else{
-                    res.redirect("/places");
+                    place.remove(function(err){
+                        if(err){
+                            console.log(err);
+                            req.flash("error", "Error occured while deleting!");
+                            res.redirect("/places");
+                        }
+                        else{
+                            res.redirect("/places");
+                        }
+                    });
                 }
             });
         }
