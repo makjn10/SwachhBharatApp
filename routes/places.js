@@ -30,7 +30,7 @@ function runScript(pathToImage){
 
 //INDEX
 router.get("/", function(req, res){
-    //Get all campgrounds from DB
+    //Get all places from DB
     Place.find({}, function(err, allplaces){
         if(err){
             console.log("DB retrieval error");
@@ -47,8 +47,6 @@ router.get("/new", middleware.isLoggedIn, function(req, res){
 });
 
 router.post("/", middleware.isLoggedIn, uploadDir.single("image"), function(req, res){
-    //get data from form and add to campgrounds array
-    //redirect to campgrounds page
     var name = req.body.name;
     var imgurl = "/uploads/images/" + req.file.filename;
     var description = req.body.description;
@@ -69,7 +67,7 @@ router.post("/", middleware.isLoggedIn, uploadDir.single("image"), function(req,
         console.log("uploads/images/" + req.file.filename, ": ", garbageVal);
         if(garbageVal === "Garbage found\n"){
             var newPlace = {name:name, image:imgurl, description:description, author:author, garbageVal:garbageVal};
-            //Create a new campground and save to DB
+            //Create a new place and save to DB
             Place.create(newPlace, function(err, newlyCreated){
                 if(err){
                     console.log("DB inserting error");

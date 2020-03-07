@@ -40,7 +40,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
                     comment.author.username = req.user.username;
                     //save the comment
                     comment.save()
-                    //add comment to campground
+                    //add comment to place
                     place.comments.push(comment);
                     place.save(function(err, data){
                         if(err){
@@ -95,7 +95,7 @@ router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, re
             Place.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     comments: req.params.comment_id
-                    //it removes all instances of this id value in comments array of the campground
+                    //it removes all instances of this id value in comments array of the place
                 }
             }, function(err, updatedplace){
                 if(err){
