@@ -73,7 +73,7 @@ router.post("/", middleware.isLoggedIn, uploadDir.single("image"), function(req,
                     console.log("DB inserting error");
                 }
                 else{
-                    res.redirect("/places");
+                    res.send("/places");
                 }
             });
         }
@@ -82,10 +82,10 @@ router.post("/", middleware.isLoggedIn, uploadDir.single("image"), function(req,
             fs.unlink("uploads/images/" + req.file.filename, (err) => {
                 if (err){
                     console.log(err);
-                    return res.redirect("back");
+                    return res.send("back");
                 }
                 console.log("Image deleted from server");
-                res.redirect("/places");
+                res.send("/places");
             });
         }         
     });       

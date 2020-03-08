@@ -4,15 +4,15 @@
     <div class="row">
         <h1 style="text-align: center;">Add a new Dirty Place</h1>
         <div style="width: 30%; margin: 25px auto;">
-            <form action="/places" method="post" enctype="multipart/form-data">
+            <form action="/places" method="post" enctype="multipart/form-data" id="submit-form">
                 <div class="form-group">
-                    <input type="text" placeholder="Name" name="name" class="form-control">
+                    <input type="text" placeholder="Name" name="name" class="form-control" id="name">
                 </div>
                 <div class="form-group">
-                    <input type="file" name="image" class="form-control" accept="image/*">
+                    <input type="file" name="image" class="form-control" accept="image/*" id="image">
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Description" name="description" class="form-control">
+                    <input type="text" placeholder="Description" name="description" class="form-control" id="description">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-block btn-primary">Submit</button>
@@ -22,5 +22,31 @@
         </div>
     </div>
 </div>
+<script>
+    //AJAX call
+    document.getElementById("submit-form").addEventListener("submit", function(event){
+        event.preventDefault();
 
+        var image = document.getElementById("image"),
+            name = document.getElementById("name").value,
+            description = document.getElementById("description").value;
+
+        var data = new FormData();
+        data.append("image", image.files[0]);
+        data.append("name", name);
+        data.append("description", description);
+    
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '/places', true);
+
+        xhr.onload = function(){
+            if(this.status == 200){
+                window.location.href = this.responseText;
+            }   
+        }
+        document.getElementById("loader").style.display = "block";
+        console.log(data);
+        xhr.send(data);
+    });
+</script>
 <%- include("../partials/footer") %>
