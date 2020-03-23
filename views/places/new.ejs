@@ -7,14 +7,27 @@
             <div style="width: 30%; margin: 25px auto;">
                 <form action="/places" method="post" enctype="multipart/form-data" id="submit-form">
                     <div class="form-group">
-                        <input type="text" placeholder="Name" name="name" class="form-control" id="name">
+                        <input type="text" placeholder="Name" name="name" class="form-control input-sm" id="name">
                     </div>
                     <div class="form-group">
-                        <input type="file" name="image" class="form-control" accept="image/*" id="image" oninput="showImage()">
+                        <input type="file" name="image" class="form-control input-sm" accept="image/*" id="image" oninput="showImage()">
                     </div>
                     <div class="form-group">
-                        <input type="text" placeholder="Description" name="description" class="form-control" id="description">
+                        <textarea class="form-control input-sm" rows="3" placeholder="Description" name="description" id="description"></textarea>
                     </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="StreetName" name="street" class="form-control input-sm" id="street" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="City" name="city" class="form-control input-sm" id="city" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="State" name="state" class="form-control input-sm" id="state" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" placeholder="PIN" name="pincode" class="form-control input-sm" id="pincode" required>
+                    </div>
+                    
                     <div class="form-group">
                         <button class="btn btn-lg btn-block btn-primary">Submit</button>
                     </div>
@@ -22,7 +35,7 @@
                 <a href="/places">Go Back</a>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" style="margin: 80px auto;">
             <div style="width: 100%; margin: 0px;">
                 <div class="hello">
                     <p id="noimage">No Image Selected</p>
@@ -50,12 +63,20 @@
 
         var image = document.getElementById("image"),
             name = document.getElementById("name").value,
-            description = document.getElementById("description").value;
+            description = document.getElementById("description").value,
+            street = document.getElementById("street").value,
+            city = document.getElementById("city").value,
+            state = document.getElementById("state").value,
+            pincode = document.getElementById("pincode").value;
 
         var data = new FormData();
         data.append("image", image.files[0]);
         data.append("name", name);
         data.append("description", description);
+        data.append("street", street);
+        data.append("city", city);
+        data.append("state", state);
+        data.append("pincode", pincode);
     
         var xhr = new XMLHttpRequest();
         xhr.open("POST", '/places', true);
@@ -66,7 +87,6 @@
             }   
         }
         document.getElementById("loader").style.display = "block";
-        console.log(data);
         xhr.send(data);
     });
 </script>

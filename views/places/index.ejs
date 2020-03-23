@@ -3,7 +3,7 @@
 <div class="container">
     <header class="jumbotron">
         <div class="container">
-            <h1>Welcome To Swatch Bharat App!</h1>
+            <h1>Welcome To Swachh Bharat App!</h1>
             <p>View various places to be cleaned all across India!</p>
             <p>
                 <a href="/places/new" class="btn btn-primary btn-lg">Add New Dirty Place</a>    
@@ -16,7 +16,7 @@
         <% places.forEach(function(place){ %>
             <div class="col-md-3 col-sm-6">
                 <div class="thumbnail">
-                    <img src= "<%= place.image %>" alt= "<%= place.name %>">                
+                    <img src= "<%= place.image %>" alt= "<%= place.name %>" class="gar-image">                
                     <div class="caption">
                         <h4><%= place.name %></h4>
                     </div>

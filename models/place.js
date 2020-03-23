@@ -4,6 +4,7 @@ var mongoose = require("mongoose");
 var placeSchema = new mongoose.Schema({
     name: String,
     image: String,
+    imageId: String,
     description: String,
     comments: [
         {
@@ -18,7 +19,17 @@ var placeSchema = new mongoose.Schema({
         },
         username: String
     },
-    garbageVal: String
+    garbageVal: String,
+    address: {
+        street: String,
+        city: String,
+        state: String,
+        pincode: Number
+    },
+    position:{
+        lon: String,
+        lat: String
+    }
 });
 
 

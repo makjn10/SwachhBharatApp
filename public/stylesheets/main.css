@@ -40,3 +40,19 @@
     text-align: center;
     padding: 30%;
 }
+.thumbnail{
+    border-radius: 15px;
+}
+.gar-image{
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+#map{
+    width: 100%;
+    height: 50vh;
+    border-radius: 15px;
+}
+#infolist{
+    margin-top: 15px;
+    border-radius: 15px;
+}

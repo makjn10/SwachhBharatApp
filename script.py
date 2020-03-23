@@ -1,34 +1,16 @@
-#!/usr/bin/python
 import sys, getopt
 from time import time
 import numpy as np
-from numpy import array
 import pandas as pd
-import matplotlib.pyplot as plt 
-import string
-import os
 from PIL import Image
-#import glob
-import keras
-import tensorflow as tf
-from pickle import dump, load
-from tensorflow.keras.preprocessing import sequence
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Embedding, TimeDistributed, Dense, RepeatVector,\
-                         Activation, Flatten, Reshape, concatenate, Dropout, BatchNormalization
-from tensorflow.keras.optimizers import Adam, RMSprop
-from keras.layers.wrappers import Bidirectional
-from keras.layers.merge import add
-from tensorflow.keras.applications.inception_v3 import InceptionV3
 
+import tensorflow
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Reshape, concatenate, Dropout
+from tensorflow.keras.applications.inception_v3 import InceptionV3
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import Model
-from tensorflow.keras import Input, layers
-from tensorflow.keras import optimizers
 from tensorflow.keras.applications.inception_v3 import preprocess_input
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.utils import to_categorical
 
 def define_model():
   model = Sequential()
@@ -46,8 +28,6 @@ model.compile(optimizer='adam',
         metrics=['accuracy'])
 
 model.load_weights('static/models/my_model.h5')
-
-
 
 model_new = InceptionV3()
 model_new = Model(model_new.input, model_new.layers[-2].output)

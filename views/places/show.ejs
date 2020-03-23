@@ -1,18 +1,31 @@
 <%- include("../partials/header") %>
+<link rel='stylesheet' type='text/css' href='https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.49.1/maps/maps.css'/>
 
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
-            <p class="lead">Swatch Bharat App</p>
-            <div class="list-group">
-                <li class="list-group-item active">Maps will come here</li>
-                <li class="list-group-item">Info 2</li>
-                <li class="list-group-item">Info 3</li>
+        <div class="col-md-4">
+            <h3 style="padding-left: 7px;">Position on map</h3>
+            <div id='map' class='map'></div>
+            <div class="list-group" id="infolist">
+                <li class="list-group-item">
+                   <address>
+                       <b>ADDRESS : </b><br>
+                       <%= place.address.street %><br>
+                       <%= place.address.city %><br>
+                       <%= place.address.state %><br>
+                       <%= place.address.pincode %>
+                   </address>
+                </li>
+                <li class="list-group-item">
+                    <b>GEOLOCATION : </b><br>
+                    Longitude : <%= place.position.lon %><br>
+                    Latitude : <%= place.position.lat %>
+                </li>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8">
             <div class="thumbnail">
-                <img src="<%= place.image %>" class="img-responsive">
+                <img src="<%= place.image %>" class="img-responsive gar-image">
                 <div class="caption-full">
                     <h4 class="pull-right"><%= place.garbageVal %></h4>
                     <h4><a><%= place.name %></a></h4>
@@ -55,9 +68,57 @@
     </div>
 </div>
 
-
-
 <p>
     <a href="/places">Go Back</a>
 </p>
+
+<div id="lon" data-test="<%= place.position.lon %>"></div>
+<div id="lat" data-test="<%= place.position.lat %>"></div>
+<div id="addstreet" data-test="<%= place.address.street %>"></div>
+<div id="addcity" data-test="<%= place.address.city %>"></div>
+<div id="addstate" data-test="<%= place.address.state %>"></div>
+<div id="addpin" data-test="<%= place.address.pincode %>"></div>
+<div id="nameplace" data-test="<%= place.name %>"></div>
+
+
+<script src='https://api.tomtom.com/maps-sdk-for-web/cdn/5.x/5.49.1/maps/maps-web.min.js'></script>
+<script>
+    var lon = document.getElementById('lon').dataset.test;
+    var lat = document.getElementById('lat').dataset.test;
+    var addstreet = document.getElementById('addstreet').dataset.test;
+    var addcity = document.getElementById('addcity').dataset.test;
+    var addstate = document.getElementById('addstate').dataset.test;
+    var addpin = document.getElementById('addpin').dataset.test;
+    var name = document.getElementById('nameplace').dataset.test;
+
+
+    tt.setProductInfo('test app', '1');
+    var map = tt.map({
+        key: YOUR_TOMTOM_API_KEY,
+        container: 'map',
+        center: [lon, lat],
+        zoom: 13.2,
+        theme: {
+            style: 'main',
+            layer: 'basic',
+            source: 'vector'
+        }
+    });
+    map.addControl(new tt.NavigationControl());
+    var marker = new tt.Marker().setLngLat([lon, lat]).addTo(map);
+
+    var popupOffsets = {
+        top: [0, 0],
+        bottom: [0, -70],
+        'bottom-right': [0, -70],
+        'bottom-left': [0, -70],
+        left: [25, -35],
+        right: [-25, -35]
+    }
+
+    var popup = new tt.Popup({offset: popupOffsets}).setHTML("<b>" + name + "</b><br>" + addstreet + "<br>" + addcity + "<br>" + addstate + "<br>" + addpin);
+    marker.setPopup(popup).togglePopup();
+
+
+</script>
 <%- include("../partials/footer") %>

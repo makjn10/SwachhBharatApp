@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 var express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
@@ -13,9 +15,17 @@ var commentRoutes = require("./routes/comments"),
     placeRoutes = require("./routes/places"),
     indexRoutes = require("./routes/index");
 
-mongoose.set('useUnifiedTopology', true);
-mongoose.set('useFindAndModify', false);
-mongoose.connect("mongodb://localhost/swatchbharatV2", {useNewUrlParser: true});
+var DBuri =  process.env.DATABASEURL;
+mongoose.connect(DBuri, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+}).then(res=>{
+    console.log("DB Connected!")
+}).catch(err => {
+    console.log(Error, err.message);
+});
 
 app.use(methodOverride("_method"));
 app.use(flash());
@@ -23,14 +33,14 @@ app.use(flash());
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-app.use('/uploads', express.static('uploads'));
 
 //PASSPORT CONFIGURATION
 app.use(require("express-session")({
-    secret: "juusbryrb8237bddjdo@34lsjsuoamjd",
+    secret: process.env.EXPSESSIONSEC,
     resave: false,
     saveUninitialized: false
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -49,6 +59,7 @@ app.use("/places/:id/comments", commentRoutes);
 app.use("/places", placeRoutes);
 
 
-app.listen(3000, function(){
-    console.log("SwatchBharat server has started!");
+var PORT = process.env.PORT;
+app.listen(PORT, function(){
+    console.log("Swachh Bharat server has started!");
 });
